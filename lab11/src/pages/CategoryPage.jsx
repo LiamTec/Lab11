@@ -17,6 +17,8 @@ function CategoryPage() {
   };
 
   return (
+    <>
+    <HeaderComponent />
     <div className="container mt-3">
       <div className="border-bottom pb-3 mb-3">
         <h3>Categorías</h3>
@@ -33,6 +35,7 @@ function CategoryPage() {
         ))}
       </ul>
     </div>
+    </>
   );
 }
 
