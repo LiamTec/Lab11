@@ -46,7 +46,8 @@ function SerieFormPage(){
                 break;
             }
         }
-    }
+    };
+
     useEffect(() => {
         setDataForm(idserie);
     }, []);
