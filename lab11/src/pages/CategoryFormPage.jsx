@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import HeaderComponent from "../components/HeaderComponent.jsx";
 
 const initialData = {
@@ -9,9 +9,7 @@ const initialData = {
 
 function CategoryFormPage() {
   const { idcategory } = useParams();
-  const navigate = useNavigate();
 
-  // Simulamos datos para cargar en edición
   const categories = [
     { cod: 1, nom: "Horror" },
     { cod: 2, nom: "Comedy" },
@@ -20,12 +18,14 @@ function CategoryFormPage() {
   ];
 
   const [data, setData] = useState(initialData);
+  const [originalData, setOriginalData] = useState(initialData);
 
   useEffect(() => {
     if (idcategory) {
       const cat = categories.find((c) => c.cod === Number(idcategory));
       if (cat) {
         setData(cat);
+        setOriginalData(cat);
       }
     }
   }, [idcategory]);
@@ -36,10 +36,18 @@ function CategoryFormPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Guardando categoría:", data);
-    // Aquí puedes hacer POST/PUT a la API
-    alert("Categoría guardada");
-    navigate("/categories");
+
+    // Comparamos solo campos modificados
+    const cambios = {};
+    if (data.nom !== originalData.nom) {
+      cambios.nom = data.nom;
+    }
+
+    if (Object.keys(cambios).length === 0) {
+      console.log("No hubo cambios en la categoría.");
+    } else {
+      console.log("Cambios en categoría:", cambios);
+    }
   };
 
   return (
@@ -64,10 +72,11 @@ function CategoryFormPage() {
                 required
               />
             </div>
+            <button className="btn btn-primary">
+              {idcategory ? "Actualizar" : "Guardar"}
+            </button>
           </div>
-          <div className="col-md-6 d-flex align-items-end">
-            <button className="btn btn-primary">{idcategory ? "Actualizar" : "Guardar"}</button>
-          </div>
+
         </form>
       </div>
     </>
